@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk,PhotoImage
 from tkinter.messagebox import showwarning,showinfo
 import re
 
@@ -27,7 +27,7 @@ class tkinterApp(tk.Tk):
         
         self.frames={}
         
-        for F in (main_page, default_quiz, make_a_quiz, custom_quiz_list):
+        for F in (main_page, default_landing, default_quiz, make_a_quiz, custom_quiz_list):
             frame=F(container,self)
             self.frames[F]=frame
             frame.grid(row=0,column=0,sticky='nsew')
@@ -60,39 +60,188 @@ class Quiz:
         return None
 
 quizzes={
-    'default':Quiz(
+    'default': Quiz(
         'Red Dead Redemption Personality Quiz',
         [
             {
-                'question':'blablabla',
-                'options':['1','2','3','4'],
-                'points':['1','2','3','4'],
+                'question': 'How do you handle betrayal?',
+                'options': ['Try to understand their reason', 'Talk it out and move forward', 'Cut them off, no questions   asked', 'Use it against them later'],
+                'points': ['1', '3', '5', '6'],
             },
             {
-                'question':'blablabla2',
-                'options':['1','2','3','4'],
-                'points':['1','2','3','4'],
-            }
+                'question': 'What matters most to you in life?',
+                'options': ['Honor and redemption', 'Legacy and vision', 'Family and security', 'Power and control'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'How do you react under pressure?',
+                'options': ['Calmly think things through', 'Trust your gut instinct', 'Act fast, fix later', 'Push others to    take the fall'],
+                'points': ['5', '3', '4', '6'],
+            },
+            {
+                'question': 'You find a large sum of money. What do you do?',
+                'options': ['Give it to someone in need', 'Hide it and plan its use wisely', 'Use it to help your loved ones',  'Keep it all for yourself'],
+                'points': ['2', '5', '4', '6'],
+            },
+            {
+                'question': 'What’s your idea of loyalty?',
+                'options': ['Standing by someone even when it’s hard', 'Being loyal until they cross you', 'Loyal to those who  earn it', 'Loyalty is just a means to an end'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'You’re in a tough moral situation. What guides your actions?',
+                'options': ['Your conscience', 'Your goals', 'The needs of your family', 'Your survival'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'How do you want to be remembered?',
+                'options': ['As a man who tried to do right', 'As a visionary', 'As a provider and protector', 'As someone who  outlived them all'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'How do you handle being wrong?',
+                'options': ['Admit it and grow', 'Rationalize it', 'Quietly fix your mistake', 'Deny and deflect'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'What do you enjoy doing the most?',
+                'options': ['Reflecting on life and journaling', 'Planning the next big move', 'Spending time with family',     'Getting what you want, however you can'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'How do you lead others?',
+                'options': ['By example', 'Through vision and persuasion', 'By making practical decisions', 'By manipulation and    force'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'What’s your greatest flaw?',
+                'options': ['Guilt and overthinking', 'Pride and delusion', 'Stubbornness', 'Ruthlessness'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'If someone you care about betrays you, how do you respond?',
+                'options': ['Hurt but try to forgive', 'Cut ties with a speech', 'Avoid them, let time heal it', 'Plot revenge'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'What would your role in a gang be?',
+                'options': ['The loyal right hand', 'The charismatic leader', 'The dependable enforcer', 'The wildcard with his     own rules'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'What’s your relationship with violence?',
+                'options': ['Necessary evil', 'Tool to get things done', 'Only when loved ones are at risk', 'Power is power'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'How do you see the law?',
+                'options': ['Flawed but necessary', 'Just another obstacle', 'A danger to protect your family from', 'Meant to  be outsmarted'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'You’re in a crisis. What’s your move?',
+                'options': ['Look for a peaceful solution', 'Stir up a distraction', 'Protect your own first', 'Exploit the     chaos'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'What drives you forward?',
+                'options': ['Redemption', 'Glory', 'Security', 'Self-preservation'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'What do you fear the most?',
+                'options': ['Dying without making amends', 'Irrelevance', 'Losing your loved ones', 'Losing control'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'How do you handle success?',
+                'options': ['Stay humble', 'Use it to reach higher', 'Build a better life for your family', 'Flaunt it'],
+                'points': ['2', '4', '5', '6'],
+            },
+            {
+                'question': 'If you had to pick one value to live by, what would it be?',
+                'options': ['Integrity', 'Power', 'Responsibility', 'Dominance'],
+                'points': ['2', '4', '5', '6'],
+            },
         ]
     ),
-    'custom':[
-        # Quiz(
-        # 'General Knowledge Quiz 1',
-        # [
-        #     {
-        #         'question':'blablabla',
-        #         'options':['1','2','3','4'],
-        #         'answer':'1',
-        #     },
-        #     {
-        #         'question':'blablabla2',
-        #         'options':['1','2','3','4'],
-        #         'answer':'4',
-        #     }
-        # ]
-        # ),
-    ]
+    'custom':[]
 }
+
+class default_landing(tk.Frame):
+    def __init__(self,parent,controller):
+        tk.Frame.__init__(self,parent)
+        
+        # images
+        self.morgan_image=PhotoImage(file='images/morgan.png')
+        self.marston_image=PhotoImage(file='images/marston.png')
+        self.dutch_image=PhotoImage(file='images/dutch.png')
+        self.hosea_image=PhotoImage(file='images/hosea.png')
+        self.bell_image=PhotoImage(file='images/bell.png')
+        
+        center_frame=tk.Frame(self)
+        center_frame.grid(row=0,column=0,sticky='nsew')
+        self.grid_rowconfigure(0,weight=1)
+        self.grid_columnconfigure(0,weight=1)
+        
+        center_frame.grid_rowconfigure(0, weight=1)
+        center_frame.grid_rowconfigure(1, weight=1)
+        center_frame.grid_rowconfigure(2, weight=1)
+        center_frame.grid_rowconfigure(3, weight=1)
+        center_frame.grid_rowconfigure(4, weight=1)
+        center_frame.grid_columnconfigure(0, weight=1)
+        center_frame.grid_columnconfigure(1, weight=1)
+        center_frame.grid_columnconfigure(2, weight=1)
+        center_frame.grid_columnconfigure(3, weight=1)
+        center_frame.grid_columnconfigure(4, weight=1)
+        
+        self.main_label=ttk.Label(center_frame,text='Want to know which character you are?',font=SUBTITLE_FONT)
+        self.dutch_image_label=ttk.Label(center_frame,image=self.dutch_image)
+        self.dutch_text=ttk.Label(center_frame,text='Dutch Van Der Linde',font=REGULAR_FONT)
+        self.dutch_description=ttk.Label(center_frame,text='Charismatic, ambitious, unpredictable')
+        
+        self.hosea_image_label=ttk.Label(center_frame,image=self.hosea_image)
+        self.hosea_text=ttk.Label(center_frame,text='Hosea Matthews',font=REGULAR_FONT)
+        self.hosea_description=ttk.Label(center_frame,text='Wise, calm, strategic')
+        
+        self.morgan_image_label=ttk.Label(center_frame,image=self.morgan_image)
+        self.morgan_text=ttk.Label(center_frame,text='Arthur Morgan',font=REGULAR_FONT)
+        self.morgan_description=ttk.Label(center_frame,text='Loyal, introspective, hardened')
+        
+        self.marston_image_label=ttk.Label(center_frame,image=self.marston_image)
+        self.marston_text=ttk.Label(center_frame,text='John Marston',font=REGULAR_FONT)
+        self.marston_description=ttk.Label(center_frame,text='Practical, family-man')
+        
+        self.bell_image_label=ttk.Label(center_frame,image=self.bell_image)
+        self.bell_text=ttk.Label(center_frame,text='Micah Bell',font=REGULAR_FONT)
+        self.bell_description=ttk.Label(center_frame,text='Survivor, manipulative, self-sufficient')
+        
+        self.proceed_button=ttk.Button(center_frame,text='Proceed',command=lambda:controller.show_frame(default_quiz))
+        
+        
+        self.main_label.grid(row=0, column=0, columnspan=5, padx=200, pady=(0, 20), sticky='nsew')
+        
+        self.dutch_image_label.grid(row=1, column=0, padx=20)
+        self.dutch_text.grid(row=2, column=0)
+        self.dutch_description.grid(row=3, column=0)
+        
+        self.hosea_image_label.grid(row=1, column=1)
+        self.hosea_text.grid(row=2, column=1)
+        self.hosea_description.grid(row=3, column=1)
+        
+        self.morgan_image_label.grid(row=1, column=2)
+        self.morgan_text.grid(row=2, column=2)
+        self.morgan_description.grid(row=3, column=2)
+        
+        self.marston_image_label.grid(row=1, column=3)
+        self.marston_text.grid(row=2, column=3)
+        self.marston_description.grid(row=3, column=3)
+        
+        self.bell_image_label.grid(row=1, column=4)
+        self.bell_text.grid(row=2, column=4)
+        self.bell_description.grid(row=3, column=4)
+        
+        self.proceed_button.grid(row=4, column=0, columnspan=5, padx=20, pady=20)
 
 class main_page(tk.Frame):
     def __init__(self,parent,controller):
@@ -106,7 +255,7 @@ class main_page(tk.Frame):
         label=ttk.Label(center_frame,text='Cornel Quiz',font=TITLE_FONT)
         sub_label=ttk.Label(center_frame,text='Main Page',font=REGULAR_FONT)
         made_by_text=ttk.Label(center_frame,text='Made by GrendpaCornel09 on GitHub',font=REGULAR_FONT)
-        default_quiz_button=ttk.Button(center_frame,text='RDR2 Personality Quiz',command=lambda:controller.show_frame(default_quiz))
+        default_quiz_button=ttk.Button(center_frame,text='RDR2 Personality Quiz',command=lambda:controller.show_frame(default_landing))
         make_a_quiz_button=ttk.Button(center_frame,text='Make a quiz',command=lambda:controller.show_frame(make_a_quiz))
         custom_quiz_button=ttk.Button(center_frame,text='Take custom quiz',command=lambda:controller.show_frame(custom_quiz_list))
         
@@ -144,7 +293,7 @@ class default_quiz(tk.Frame):
         self.score_text=ttk.Label(center_frame,text=f'Base Score: {self.user_base_score}')
         self.back_button=ttk.Button(center_frame,text='Main page',command=lambda:controller.show_frame(main_page))
         
-        self.label.grid(row=0,column=0,columnspan=2,padx=10,pady=10)
+        self.label.grid(row=0,column=0,columnspan=2,padx=10,pady=(10,50))
         self.question_label.grid(row=1,column=0,columnspan=2,padx=10,pady=10)
         for i,button in enumerate(self.options):
             button.grid(row=2+i,column=0,columnspan=2,padx=10,pady=5)
@@ -154,15 +303,59 @@ class default_quiz(tk.Frame):
         self.load_question()
     
     def load_question(self):
+        self.you_are_label=ttk.Label(self,text='You are...',font=REGULAR_FONT)
+        
         question=self.quiz.get_question(self.current_question_index)
         if question:
             self.question_label.config(text=question['question'])
             for i,option in enumerate(question['options']):
                 self.options[i].config(text=option)
         else:
-            self.question_label.config(text='Quiz Complete!')
             for button in self.options:
                 button.grid_remove()
+            self.question_label.config(text='Quiz Complete!')
+            self.you_are_label.grid(column=0,row=1,columnspan=2,padx=10,pady=10)
+            
+            if 20<=int(self.user_base_score)<=40:
+                self.morgan_image=PhotoImage(file='images/morgan.png')
+                self.morgan_image_label=ttk.Label(self,image=self.morgan_image)
+                self.morgan_text=ttk.Label(self,text='Arthur Morgan',font=REGULAR_FONT)
+                self.morgan_description=ttk.Label(self,text='Loyal, introspective, hardened')
+                self.morgan_image_label.grid(row=2, column=0, columnspan=2)
+                self.morgan_text.grid(row=3, column=0, columnspan=2)
+                self.morgan_description.grid(row=4, column=0, columnspan=2, pady=(0,20))
+            elif 41<=int(self.user_base_score)<=60:
+                self.dutch_image=PhotoImage(file='images/dutch.png')
+                self.dutch_image_label=ttk.Label(self,image=self.dutch_image)
+                self.dutch_text=ttk.Label(self,text='Dutch Van Der Linde',font=REGULAR_FONT)
+                self.dutch_description=ttk.Label(self,text='Charismatic, ambitious, unpredictable')
+                self.dutch_image_label.grid(row=2, column=0, columnspan=2)
+                self.dutch_text.grid(row=3, column=0, columnspan=2)
+                self.dutch_description.grid(row=4, column=0, columnspan=2, pady=(0,20))
+            elif 61<=int(self.user_base_score)<=80:
+                self.marston_image=PhotoImage(file='images/marston.png')
+                self.marston_image_label=ttk.Label(self,image=self.marston_image)
+                self.marston_text=ttk.Label(self,text='John marston',font=REGULAR_FONT)
+                self.marston_description=ttk.Label(self,text='Practical, family-man')
+                self.marston_image_label.grid(row=2, column=0, columnspan=2)
+                self.marston_text.grid(row=3, column=0, columnspan=2)
+                self.marston_description.grid(row=4, column=0, columnspan=2, pady=(0,20))
+            elif 81<=int(self.user_base_score)<=100:
+                self.hosea_image=PhotoImage(file='images/hosea.png')
+                self.hosea_image_label=ttk.Label(self,image=self.hosea_image)
+                self.hosea_text=ttk.Label(self,text='Hosea Matthews',font=REGULAR_FONT)
+                self.hosea_description=ttk.Label(self,text='Wise, calm, strategic')
+                self.hosea_image_label.grid(row=2, column=0, columnspan=2)
+                self.hosea_text.grid(row=3, column=0, columnspan=2)
+                self.hosea_description.grid(row=4, column=0, columnspan=2, pady=(0,20))
+            else:
+                self.bell_image=PhotoImage(file='images/bell.png')
+                self.bell_image_label=ttk.Label(self,image=self.bell_image)
+                self.bell_text=ttk.Label(self,text='Micah bell',font=REGULAR_FONT)
+                self.bell_description=ttk.Label(self,text='Survivor, manipulative, self-sufficient')
+                self.bell_image_label.grid(row=2, column=0, columnspan=2)
+                self.bell_text.grid(row=3, column=0, columnspan=2)
+                self.bell_description.grid(row=4, column=0, columnspan=2, pady=(0,20))
     
     def check_answer(self,selected_index):
         question=self.quiz.get_question(self.current_question_index)
