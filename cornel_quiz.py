@@ -291,6 +291,7 @@ class default_quiz(tk.Frame):
             self.options.append(button)
         
         self.score_text=ttk.Label(center_frame,text=f'Base Score: {self.user_base_score}')
+        # self.back_button=ttk.Button(center_frame,text='Main page',command=self.go_to_main_page)
         self.back_button=ttk.Button(center_frame,text='Main page',command=lambda:controller.show_frame(main_page))
         
         self.label.grid(row=0,column=0,columnspan=2,padx=10,pady=(10,50))
@@ -368,6 +369,16 @@ class default_quiz(tk.Frame):
         self.score_text.config(text=f'Base Score: {self.user_base_score}')
         self.current_question_index+=1
         self.load_question()
+    
+    # def reset_quiz(self):
+    #     self.user_base_score=0
+    #     self.current_question_index=0
+    #     self.score_text.config(text=f'Base Sscore: {self.user_base_score}')
+    #     self.load_question()
+    
+    # def go_to_main_page(self):
+    #     self.reset_quiz()
+    #     self.controller.show_frame(main_page)
 
 class make_a_quiz(tk.Frame):
     question_count=0
