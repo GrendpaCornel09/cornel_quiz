@@ -273,7 +273,6 @@ class default_quiz(tk.Frame):
         self.controller=controller
         self.quiz=quizzes['default']
         self.current_question_index=0
-        # self.answer_state='incorrect'
         
         center_frame=tk.Frame(self)
         center_frame.grid(row=0,column=0)
@@ -282,7 +281,6 @@ class default_quiz(tk.Frame):
         
         self.label=ttk.Label(center_frame,text=self.quiz.title,font=SUBTITLE_FONT)
         self.question_label=ttk.Label(center_frame,text='',font=REGULAR_FONT)
-        # self.correct_incorrect_label=ttk.Label(self,text=self.answer_state,font=REGULAR_FONT)
         self.options=[]
         
         for i in range(4):
@@ -290,7 +288,6 @@ class default_quiz(tk.Frame):
             self.options.append(button)
         
         self.score_text=ttk.Label(center_frame,text=f'Base Score: {self.user_base_score}')
-        # self.back_button=ttk.Button(center_frame,text='Main page',command=self.go_to_main_page)
         self.back_button=ttk.Button(center_frame,text='Main page',command=lambda:controller.show_frame(main_page))
         
         self.label.grid(row=0,column=0,columnspan=2,padx=10,pady=(10,50))
@@ -313,78 +310,35 @@ class default_quiz(tk.Frame):
                 button.grid_remove()
             self.question_label.config(text='Quiz Complete!')
             
+            user_character=''
             if 20<=int(self.user_base_score)<=40:
-                column=0
-                for key in ['morgan']:
-                    image_label=ttk.Label(self,image=self.controller.images[key])
-                    text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
-                    description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
-            
-                    image_label.grid(row=1,column=column,padx=20)
-                    text_label.grid(row=2,column=column)
-                    description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
+                user_character='morgan'
             elif 41<=int(self.user_base_score)<=60:
-                column=0
-                for key in ['dutch']:
-                    image_label=ttk.Label(self,image=self.controller.images[key])
-                    text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
-                    description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
-            
-                    image_label.grid(row=1,column=column,padx=20)
-                    text_label.grid(row=2,column=column)
-                    description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
+                user_character='dutch'
             elif 61<=int(self.user_base_score)<=80:
-                column=0
-                for key in ['marston']:
-                    image_label=ttk.Label(self,image=self.controller.images[key])
-                    text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
-                    description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
-            
-                    image_label.grid(row=1,column=column,padx=20)
-                    text_label.grid(row=2,column=column)
-                    description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
+                user_character='marston'
             elif 81<=int(self.user_base_score)<=100:
-                column=0
-                for key in ['hosea']:
-                    image_label=ttk.Label(self,image=self.controller.images[key])
-                    text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
-                    description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
-            
-                    image_label.grid(row=1,column=column,padx=20)
-                    text_label.grid(row=2,column=column)
-                    description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
+                user_character='hosea'
             else:
-                column=0
-                for key in ['bell']:
-                    image_label=ttk.Label(self,image=self.controller.images[key])
-                    text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
-                    description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
+                user_character='bell'
             
-                    image_label.grid(row=1,column=column,padx=20)
-                    text_label.grid(row=2,column=column)
-                    description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
+            column=0
+            for key in [user_character]:
+                image_label=ttk.Label(self,image=self.controller.images[key])
+                text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
+                description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
+            
+                image_label.grid(row=1,column=column,padx=20)
+                text_label.grid(row=2,column=column)
+                description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
     
     def check_answer(self,selected_index):
         question=self.quiz.get_question(self.current_question_index)
         answer_point=question['points'][selected_index] if question else None
-        # if question and question['options'][selected_index]==question['answer']:
-        #     ttk.Label(self,text='correct :)',font=REGULAR_FONT).grid(row=6,column=0,padx=10,pady=10)
-        # else:
-        #     ttk.Label(self,text='incorrect :(',font=REGULAR_FONT).grid(row=6,column=0,padx=10,pady=10)
         self.user_base_score=str(int(self.user_base_score)+int(answer_point))
         self.score_text.config(text=f'Base Score: {self.user_base_score}')
         self.current_question_index+=1
         self.load_question()
-    
-    # def reset_quiz(self):
-    #     self.user_base_score=0
-    #     self.current_question_index=0
-    #     self.score_text.config(text=f'Base Sscore: {self.user_base_score}')
-    #     self.load_question()
-    
-    # def go_to_main_page(self):
-    #     self.reset_quiz()
-    #     self.controller.show_frame(main_page)
 
 class make_a_quiz(tk.Frame):
     question_count=0
@@ -396,7 +350,6 @@ class make_a_quiz(tk.Frame):
         self.grid_rowconfigure(0,weight=1)
         self.grid_columnconfigure(0,weight=1)
         
-        # self.question_count=question_count
         self.controller=controller
         self.title_label=ttk.Label(center_frame,text='Create a Custom Quiz',font=TITLE_FONT)
         self.title_entry=ttk.Entry(center_frame)
@@ -418,7 +371,6 @@ class make_a_quiz(tk.Frame):
         print(self.questions)
     
     def add_question(self):
-        # self.open_question_window()
         if not self.title_entry.get():
             showwarning(title='Warning',message='You need a title for your quiz.')
         else:
@@ -540,7 +492,6 @@ class custom_quiz(tk.Frame):
         
         self.quiz=quizzes['custom'][self.quiz_index]
         self.current_question_index=0
-        # self.answer_state='incorrect'
         
         self.label=ttk.Label(center_frame,text=self.quiz.title,font=TITLE_FONT)
         self.question_label=ttk.Label(center_frame,text='',font=REGULAR_FONT)
