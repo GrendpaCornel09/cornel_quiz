@@ -14,10 +14,44 @@ TITLE_FONT=('Segoe UI Bold', 40)
 SUBTITLE_FONT=('Segoe UI Semibold',30)
 REGULAR_FONT=('Segoe UI', 15)
 
+characters=['Arthur Morgan','John Marston','Hosea Matthews','Dutch van der Linde','Micah Bell']
+values=['Loyal, introspective, hardened','Practical, family-man','Wise, calm, strategic','Charismatic, ambitious, unpredictable','Survivor, manipulative, self-sufficient',]
+morgan_index=0
+marston_index=1
+hosea_index=2
+dutch_index=3
+bell_index=4
+
 class tkinterApp(tk.Tk):
     def __init__(self,*args,**kwargs):
         tk.Tk.__init__(self,*args,**kwargs)
         self.title('Cornel Quiz v0.1')
+        
+        # images
+        self.images={
+            'morgan':PhotoImage(file='images/morgan.png'),
+            'marston':PhotoImage(file='images/marston.png'),
+            'dutch':PhotoImage(file='images/dutch.png'),
+            'hosea':PhotoImage(file='images/hosea.png'),
+            'bell':PhotoImage(file='images/bell.png')
+        }
+        
+        # label data
+        self.character_texts={
+            'morgan': {'text': characters[morgan_index], 'font': REGULAR_FONT},
+            'marston': {'text': characters[marston_index], 'font': REGULAR_FONT},
+            'dutch': {'text': characters[dutch_index], 'font': REGULAR_FONT},
+            'hosea': {'text': characters[hosea_index], 'font': REGULAR_FONT},
+            'bell': {'text': characters[bell_index], 'font': REGULAR_FONT},
+        }
+        self.character_descriptions = {
+            'morgan': {'text': values[morgan_index]},
+            'marston': {'text': values[marston_index]},
+            'dutch': {'text': values[dutch_index]},
+            'hosea': {'text': values[hosea_index]},
+            'bell': {'text': values[bell_index]},
+            'y_pad':30
+        }
         
         # container
         container=tk.Frame(self)
@@ -58,7 +92,7 @@ class Quiz:
         if 0<=index<len(self.questions):
             return self.questions[index]
         return None
-
+    
 quizzes={
     'default': Quiz(
         'Red Dead Redemption Personality Quiz',
@@ -129,9 +163,9 @@ quizzes={
                 'points': ['2', '4', '5', '6'],
             },
             {
-                'question': 'What’s your relationship with violence?',
-                'options': ['Necessary evil', 'Tool to get things done', 'Only when loved ones are at risk', 'Power is power'],
-                'points': ['2', '4', '5', '6'],
+                'question': 'How do you prefer to spend your downtime?',
+                'options': ['Sketching or reflecting alone', 'Chatting and laughing with friends', 'Fixing something around the house', 'Keeping tabs on everything around me'],
+                'points': ['2', '5', '4', '6'],
             },
             {
                 'question': 'How do you see the law?',
@@ -172,13 +206,6 @@ class default_landing(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
         
-        # images
-        self.morgan_image=PhotoImage(file='images/morgan.png')
-        self.marston_image=PhotoImage(file='images/marston.png')
-        self.dutch_image=PhotoImage(file='images/dutch.png')
-        self.hosea_image=PhotoImage(file='images/hosea.png')
-        self.bell_image=PhotoImage(file='images/bell.png')
-        
         center_frame=tk.Frame(self)
         center_frame.grid(row=0,column=0,sticky='nsew')
         self.grid_rowconfigure(0,weight=1)
@@ -196,52 +223,24 @@ class default_landing(tk.Frame):
         center_frame.grid_columnconfigure(4, weight=1)
         
         self.main_label=ttk.Label(center_frame,text='Want to know which character you are?',font=SUBTITLE_FONT)
-        self.dutch_image_label=ttk.Label(center_frame,image=self.dutch_image)
-        self.dutch_text=ttk.Label(center_frame,text='Dutch Van Der Linde',font=REGULAR_FONT)
-        self.dutch_description=ttk.Label(center_frame,text='Charismatic, ambitious, unpredictable')
-        
-        self.hosea_image_label=ttk.Label(center_frame,image=self.hosea_image)
-        self.hosea_text=ttk.Label(center_frame,text='Hosea Matthews',font=REGULAR_FONT)
-        self.hosea_description=ttk.Label(center_frame,text='Wise, calm, strategic')
-        
-        self.morgan_image_label=ttk.Label(center_frame,image=self.morgan_image)
-        self.morgan_text=ttk.Label(center_frame,text='Arthur Morgan',font=REGULAR_FONT)
-        self.morgan_description=ttk.Label(center_frame,text='Loyal, introspective, hardened')
-        
-        self.marston_image_label=ttk.Label(center_frame,image=self.marston_image)
-        self.marston_text=ttk.Label(center_frame,text='John Marston',font=REGULAR_FONT)
-        self.marston_description=ttk.Label(center_frame,text='Practical, family-man')
-        
-        self.bell_image_label=ttk.Label(center_frame,image=self.bell_image)
-        self.bell_text=ttk.Label(center_frame,text='Micah Bell',font=REGULAR_FONT)
-        self.bell_description=ttk.Label(center_frame,text='Survivor, manipulative, self-sufficient')
-        
         self.proceed_button=ttk.Button(center_frame,text='Proceed',command=lambda:controller.show_frame(default_quiz))
-        
+        self.image_source_text=ttk.Label(center_frame,text='Image Source: fandom.com')
         
         self.main_label.grid(row=0, column=0, columnspan=5, padx=200, pady=(0, 20), sticky='nsew')
+        column=0
+        for key in ['dutch','hosea','morgan','marston','bell']:
+            image_label=ttk.Label(center_frame,image=controller.images[key])
+            text_label=ttk.Label(center_frame,text=controller.character_texts[key]['text'],font=controller.character_texts[key]['font'])
+            description_label = ttk.Label(center_frame,text=controller.character_descriptions[key]['text'])
+            
+            image_label.grid(row=1,column=column,padx=20)
+            text_label.grid(row=2,column=column)
+            description_label.grid(row=3,column=column)
+            
+            column+=1
         
-        self.dutch_image_label.grid(row=1, column=0, padx=20)
-        self.dutch_text.grid(row=2, column=0)
-        self.dutch_description.grid(row=3, column=0)
-        
-        self.hosea_image_label.grid(row=1, column=1)
-        self.hosea_text.grid(row=2, column=1)
-        self.hosea_description.grid(row=3, column=1)
-        
-        self.morgan_image_label.grid(row=1, column=2)
-        self.morgan_text.grid(row=2, column=2)
-        self.morgan_description.grid(row=3, column=2)
-        
-        self.marston_image_label.grid(row=1, column=3)
-        self.marston_text.grid(row=2, column=3)
-        self.marston_description.grid(row=3, column=3)
-        
-        self.bell_image_label.grid(row=1, column=4)
-        self.bell_text.grid(row=2, column=4)
-        self.bell_description.grid(row=3, column=4)
-        
-        self.proceed_button.grid(row=4, column=0, columnspan=5, padx=20, pady=20)
+        self.proceed_button.grid(row=4,column=0,columnspan=5,padx=20,pady=20)
+        self.image_source_text.grid(row=5,column=0,columnspan=5,padx=20,pady=20)
 
 class main_page(tk.Frame):
     def __init__(self,parent,controller):
@@ -304,8 +303,6 @@ class default_quiz(tk.Frame):
         self.load_question()
     
     def load_question(self):
-        self.you_are_label=ttk.Label(self,text='You are...',font=REGULAR_FONT)
-        
         question=self.quiz.get_question(self.current_question_index)
         if question:
             self.question_label.config(text=question['question'])
@@ -315,48 +312,57 @@ class default_quiz(tk.Frame):
             for button in self.options:
                 button.grid_remove()
             self.question_label.config(text='Quiz Complete!')
-            self.you_are_label.grid(column=0,row=1,columnspan=2,padx=10,pady=10)
             
             if 20<=int(self.user_base_score)<=40:
-                self.morgan_image=PhotoImage(file='images/morgan.png')
-                self.morgan_image_label=ttk.Label(self,image=self.morgan_image)
-                self.morgan_text=ttk.Label(self,text='Arthur Morgan',font=REGULAR_FONT)
-                self.morgan_description=ttk.Label(self,text='Loyal, introspective, hardened')
-                self.morgan_image_label.grid(row=2, column=0, columnspan=2)
-                self.morgan_text.grid(row=3, column=0, columnspan=2)
-                self.morgan_description.grid(row=4, column=0, columnspan=2, pady=(0,20))
+                column=0
+                for key in ['morgan']:
+                    image_label=ttk.Label(self,image=self.controller.images[key])
+                    text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
+                    description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
+            
+                    image_label.grid(row=1,column=column,padx=20)
+                    text_label.grid(row=2,column=column)
+                    description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
             elif 41<=int(self.user_base_score)<=60:
-                self.dutch_image=PhotoImage(file='images/dutch.png')
-                self.dutch_image_label=ttk.Label(self,image=self.dutch_image)
-                self.dutch_text=ttk.Label(self,text='Dutch Van Der Linde',font=REGULAR_FONT)
-                self.dutch_description=ttk.Label(self,text='Charismatic, ambitious, unpredictable')
-                self.dutch_image_label.grid(row=2, column=0, columnspan=2)
-                self.dutch_text.grid(row=3, column=0, columnspan=2)
-                self.dutch_description.grid(row=4, column=0, columnspan=2, pady=(0,20))
+                column=0
+                for key in ['dutch']:
+                    image_label=ttk.Label(self,image=self.controller.images[key])
+                    text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
+                    description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
+            
+                    image_label.grid(row=1,column=column,padx=20)
+                    text_label.grid(row=2,column=column)
+                    description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
             elif 61<=int(self.user_base_score)<=80:
-                self.marston_image=PhotoImage(file='images/marston.png')
-                self.marston_image_label=ttk.Label(self,image=self.marston_image)
-                self.marston_text=ttk.Label(self,text='John marston',font=REGULAR_FONT)
-                self.marston_description=ttk.Label(self,text='Practical, family-man')
-                self.marston_image_label.grid(row=2, column=0, columnspan=2)
-                self.marston_text.grid(row=3, column=0, columnspan=2)
-                self.marston_description.grid(row=4, column=0, columnspan=2, pady=(0,20))
+                column=0
+                for key in ['marston']:
+                    image_label=ttk.Label(self,image=self.controller.images[key])
+                    text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
+                    description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
+            
+                    image_label.grid(row=1,column=column,padx=20)
+                    text_label.grid(row=2,column=column)
+                    description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
             elif 81<=int(self.user_base_score)<=100:
-                self.hosea_image=PhotoImage(file='images/hosea.png')
-                self.hosea_image_label=ttk.Label(self,image=self.hosea_image)
-                self.hosea_text=ttk.Label(self,text='Hosea Matthews',font=REGULAR_FONT)
-                self.hosea_description=ttk.Label(self,text='Wise, calm, strategic')
-                self.hosea_image_label.grid(row=2, column=0, columnspan=2)
-                self.hosea_text.grid(row=3, column=0, columnspan=2)
-                self.hosea_description.grid(row=4, column=0, columnspan=2, pady=(0,20))
+                column=0
+                for key in ['hosea']:
+                    image_label=ttk.Label(self,image=self.controller.images[key])
+                    text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
+                    description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
+            
+                    image_label.grid(row=1,column=column,padx=20)
+                    text_label.grid(row=2,column=column)
+                    description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
             else:
-                self.bell_image=PhotoImage(file='images/bell.png')
-                self.bell_image_label=ttk.Label(self,image=self.bell_image)
-                self.bell_text=ttk.Label(self,text='Micah bell',font=REGULAR_FONT)
-                self.bell_description=ttk.Label(self,text='Survivor, manipulative, self-sufficient')
-                self.bell_image_label.grid(row=2, column=0, columnspan=2)
-                self.bell_text.grid(row=3, column=0, columnspan=2)
-                self.bell_description.grid(row=4, column=0, columnspan=2, pady=(0,20))
+                column=0
+                for key in ['bell']:
+                    image_label=ttk.Label(self,image=self.controller.images[key])
+                    text_label=ttk.Label(self,text=self.controller.character_texts[key]['text'],font=self.controller.character_texts[key]['font'])
+                    description_label = ttk.Label(self,text=self.controller.character_descriptions[key]['text'])
+            
+                    image_label.grid(row=1,column=column,padx=20)
+                    text_label.grid(row=2,column=column)
+                    description_label.grid(row=3,column=column,pady=(0,self.controller.character_descriptions['y_pad']))
     
     def check_answer(self,selected_index):
         question=self.quiz.get_question(self.current_question_index)
